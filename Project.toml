@@ -3,6 +3,11 @@ uuid = "a23a6a16-69b1-493d-834c-eaa9384b934a"
 authors = ["krynju <gulinski.krystian@gmail.com> and contributors"]
 version = "0.1.0"
 
+[deps]
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+JuliaFormatter = "98e50ef6-434e-11e9-1051-2b60c6c9e899"
+Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
+
 [compat]
 julia = "1.5"
 
