@@ -11,24 +11,20 @@ function ff(x::T) where T <: AbstractFloat
 end
 
 
-function mh_naive(x₀::T, N::Integer, burn_N::Integer, f::Function) where {T <: AbstractFloat}
-
+function mh_serial_naive(x₀::T, N::Integer, burn_N::Integer, f::Function) where T <: AbstractFloat
     x = Vector{T}(undef, N)
     xₜ = x₀::T
-    σ² = one(T)
-    P = convert(T, 0.1)
 
-    TARGET = convert(T, 0.3)
-    accepted = 0
-
-    @inline function _gen_candidate(xₜ::T, σ²::T, f::Function)
-
+    @inline function _gen_candidate(xₜ::Y, σ²::Y, f::Function) where Y <: AbstractFloat
         g = Normal(xₜ, σ²)
         x′ = rand(g)
         α = f(x′) / f(xₜ)
-        x′::T, α
+        x′, α
     end
 
+    σ² = one(T)
+    target = 0.3
+    accepted = 0
     for i = 1:burn_N
         x′, α = _gen_candidate(xₜ, σ², ff)
         u = rand(Uniform(0, 1))
@@ -36,7 +32,7 @@ function mh_naive(x₀::T, N::Integer, burn_N::Integer, f::Function) where {T <:
             xₜ = x′
             accepted += 1
         end
-        σ² += P * (convert(T, accepted / i) - TARGET)
+        σ² += convert(T, 1 / σ² * 1000( (accepted / i) - target))
     end
 
     for t = 1:N
@@ -52,23 +48,23 @@ function mh_naive(x₀::T, N::Integer, burn_N::Integer, f::Function) where {T <:
 end
 
 
-function mh_optimized1(
+function mh_serial_optimized(
     x₀::T,
     N::Integer,
     burn_N::Integer,
     f::Function,
+    seed::Integer
 ) where {T <: AbstractFloat}
+    # optymalizacja algorytmu poprzez zapamiętywanie poprzednich ewaluacji funkcji aproksymującej
+    # optymalizacja wykonania przez jawne podanie generatora liczb losowych (globalny bywa wolniejszy)
 
     x = Vector{T}(undef, N)
     xₜ = x₀::T
     σ² = one(T)
-    P = convert(T, 0.1)
-    rng = MersenneTwister(SEED)
+   
+    rng = MersenneTwister(seed)
 
-    TARGET = convert(T, 0.3)
-    accepted = 0
-
-    @inline function _gen_candidate(xₜ::T, σ²::T, f_xₜ, f::Function)
+    @inline function _gen_candidate(xₜ::Y, σ²::Y, f_xₜ, f::Function) where Y <: AbstractFloat
         g = Normal(xₜ, σ²)
         x′ = rand(rng, g)
         f_x′ = f(x′)
@@ -76,6 +72,8 @@ function mh_optimized1(
         x′, α, f_x′
     end
 
+    target = 0.3
+    accepted = 0
     f_xₜ = f(xₜ)
     for i = 1:burn_N
         x′, α, f_x′ = _gen_candidate(xₜ, σ², f_xₜ, ff)
@@ -85,7 +83,7 @@ function mh_optimized1(
             f_xₜ = f_x′
             accepted += 1
         end
-        σ² += P * (convert(T, accepted / i) - TARGET)
+        σ² += convert(T, 1 / σ² * 1000( (accepted / i) - target))
     end
 
     for t = 1:N
@@ -101,7 +99,7 @@ function mh_optimized1(
     return x
 end
 
-function mh_threaded(
+function mh_threaded_naive(
     x₀::T,
     N::Integer,
     burn_N::Integer,
@@ -114,18 +112,16 @@ function mh_threaded(
     P = convert(T, 0.1)
     rng = MersenneTwister(SEED)
 
-    TARGET = convert(T, 0.3)
+    target = convert(T, 0.3)
     accepted = 0
 
-    @inline function _gen_candidate(xₜ::T, σ²::T, f_xₜ, f::Function)
+    @inline function _gen_candidate(xₜ::Y, σ²::Y, f_xₜ, f::Function) where Y <: AbstractFloat
         g = Normal(xₜ, σ²)
         x′ = rand(rng, g)
         f_x′ = f(x′)
         α = f_x′ / f_xₜ
         x′, α, f_x′
     end
-
-
     
     f_xₜ = f(xₜ)
     for i = 1:burn_N
@@ -136,7 +132,7 @@ function mh_threaded(
             f_xₜ = f_x′
             accepted += 1
         end
-        σ² += P * (convert(T, accepted / i) - TARGET)
+        σ² += convert(T, 1 / σ² * 1000( (accepted / i) - target))
     end
 
     Threads.@threads for t = 1:N
@@ -149,13 +145,12 @@ function mh_threaded(
         x[t] = xₜ
     end
 
-
     return x
 end
 
  
 
-@inline function _gen_candidate(xₜ::T, σ²::T, f_xₜ, f::Function, rng) where T <: AbstractFloat
+@inline function _gen_candidate(xₜ::T, σ²::T, f_xₜ, f, rng) where T <: AbstractFloat
     g = Normal(xₜ, σ²)
     x′ = rand(rng, g)
     f_x′ = f(x′)
@@ -163,23 +158,21 @@ end
     x′, α, f_x′
 end
 
-function _inner_loop(_x, range, xₜ, ff, σ², seed)
-    _rng = MersenneTwister(seed)
+function __generate_loop(x::Vector{T}, xₜ::T, σ²::T, range::R, ff, rng::RNG) where {T <: AbstractFloat,R <: AbstractRange,RNG <: AbstractRNG} 
+   
     f_xₜ = ff(xₜ)
     for t in range
-        x′, α, f_x′ = _gen_candidate(xₜ, σ², f_xₜ, ff, _rng)
-        u = rand(_rng, Uniform(0, 1))
+        x′, α, f_x′ = _gen_candidate(xₜ, σ², f_xₜ, ff, rng)
+        u = rand(rng, Uniform(0, 1))
         if (u <= α)
             xₜ = x′
             f_xₜ = f_x′
         end
-        _x[t] = xₜ
+        x[t] = xₜ
     end
 end
 
-function _burn_loop0(xₜ::T, ff, σ²::T, rng, burn_N,  target) where T<:AbstractFloat
-    P=convert(T,0.1)
-    TARGET =  convert(T,0.3)
+function __burn_loop(xₜ::T, σ²::T, burn_N::Integer, target, ff, rng::RNG) where  {T <: AbstractFloat,RNG <: AbstractRNG} 
     accepted = 0
     f_xₜ = ff(xₜ)
     for i = 1:burn_N
@@ -190,42 +183,38 @@ function _burn_loop0(xₜ::T, ff, σ²::T, rng, burn_N,  target) where T<:Abstra
             f_xₜ = f_x′
             accepted += 1
         end
-        σ² += convert(T, 1/σ² * 1000( (accepted / i) - TARGET))
+        σ² += convert(T, 1 / σ² * 1000( (accepted / i) - target))
     end
-    σ², xₜ, accepted/burn_N
+    σ², xₜ
 end
 
 
-function mh_threaded2(
+function mh_threaded_optimized(
     x₀::T,
     N::Integer,
     burn_N::Integer,
     f::Function, 
-    _seed::Integer
+    seed::Integer
 ) where {T <: AbstractFloat}
-    SEED = _seed
     x = Vector{T}(undef, N)
     xₜ = x₀::T
     σ² = one(T)
-    P = convert(T, 0.1)
-    rng = MersenneTwister(SEED)
 
-    TARGET=0.3
-    σ², xₜ = _burn_loop0(xₜ, ff, σ², rng, burn_N, TARGET)
+    rng = MersenneTwister(seed)
 
+    TARGET = 0.3
+    σ², xₜ = __burn_loop(xₜ, σ², burn_N, TARGET, ff, rng)
 
     N_THR = Threads.nthreads()
 
-    tasks = Vector{Task}(undef, N_THR)
     ranges = collect(Iterators.partition(1:N, (N + N_THR) ÷ N_THR))
-    for i in 1:N_THR
-        tasks[i] = Threads.@spawn _inner_loop(x, ranges[i], xₜ, ff, σ², rng.seed[1] * i)
-    end
-    wait.(tasks)
+
+    _task = (id) -> Threads.@spawn __generate_loop(x, xₜ, σ², ranges[id], ff,  MersenneTwister(rng.seed[1] * id))
+    wait.(map(id -> _task(id), 1:N_THR))  
 
     return x
 end
 
-export mh_naive, ff, mh_optimized1, mh_threaded, mh_threaded2
+export ff, mh_serial_naive, mh_serial_optimized, mh_threaded_naive, mh_threaded_optimized 
 
 end
