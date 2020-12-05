@@ -1,0 +1,1790 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="statprofiler.css">
+
+    <title>StatProfilerHTML.jl: /opt/julia/usr/bin/../share/julia/base/./compiler/inferenceresult.jl</title>
+  </head>
+  <body>
+<div class="report-header">
+  <div class="backlink"><a href="index.html">Report index</a></div>
+  <div class="report-title">StatProfilerHTML.jl report</div>
+  <div class="generated-on">Generated on Sat 05 Dec 2020 05:28:44 PM CET</div>
+</div>
+
+    <div id="body-content">
+      <table>
+        <caption>File source code</caption>
+        <tr>
+          <th>Line</td>
+          <th>Exclusive</th>
+          <th>Inclusive</th>
+          <th>Code</th>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-1"></a>1</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># This file is a part of Julia. License is MIT: https://julialang.org/license
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-2"></a>2</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-3"></a>3</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">const EMPTY_VECTOR = Vector{Any}()
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-4"></a>4</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-5"></a>5</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">mutable struct InferenceResult
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-6"></a>6</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    linfo::MethodInstance
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-7"></a>7</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    argtypes::Vector{Any}
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-8"></a>8</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    overridden_by_const::BitVector
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-9"></a>9</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    result # ::Type, or InferenceState if WIP
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-10"></a>10</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    src #::Union{CodeInfo, OptimizationState, Nothing} # if inferred copy is available
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-11"></a>11</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    function InferenceResult(linfo::MethodInstance, given_argtypes = nothing)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-12"></a>12</td>
+          <td></td>
+          <td>2 (0.03%)</td>
+          <td>
+            <div class="call-sites">
+              <a name="S-opt-julia-usr-bin-share-julia-base-compiler-inferenceresult-jl-InferenceResult-12"></a>
+              1 (0.01%) samples spent in InferenceResult<br />
+              0 (ex.),
+              0 (incl.)
+              when called from
+              InferenceResult
+              <a href="inferenceresult-jl-aa36955df4dd4074fc6a-line.html#Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-12">line 12</a><br />
+              0 (ex.),
+              1 (100.00%) (incl.)
+              when called from
+              typeinf_ext
+              <a href="typeinfer-jl-c2e35d869c9409957c5d-line.html#Ltypeinfer-jl-c2e35d869c9409957c5d-line.html-568">line 568</a><br />
+            </div>
+            <div class="callees">
+              1 (50.00%)
+              samples spent calling
+              <a href="inferenceresult-jl-aa36955df4dd4074fc6a-line.html#S-opt-julia-usr-bin-share-julia-base-compiler-inferenceresult-jl-matching_cache_argtypes-61">matching_cache_argtypes</a><br />
+              1 (50.00%)
+              samples spent calling
+              <a href="inferenceresult-jl-aa36955df4dd4074fc6a-line.html#S-opt-julia-usr-bin-share-julia-base-compiler-inferenceresult-jl-InferenceResult-12">InferenceResult</a><br />
+            </div>
+            <span class="code">        argtypes, overridden_by_const = matching_cache_argtypes(linfo, given_argtypes)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-13"></a>13</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        return new(linfo, argtypes, overridden_by_const, Any, nothing)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-14"></a>14</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-15"></a>15</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-16"></a>16</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-17"></a>17</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function is_argtype_match(@nospecialize(given_argtype),
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-18"></a>18</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                          @nospecialize(cache_argtype),
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-19"></a>19</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                          overridden_by_const::Bool)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-20"></a>20</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    if isa(given_argtype, Const) || isa(given_argtype, PartialStruct)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-21"></a>21</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        return is_lattice_equal(given_argtype, cache_argtype)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-22"></a>22</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-23"></a>23</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    return !overridden_by_const
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-24"></a>24</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-25"></a>25</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-26"></a>26</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># In theory, there could be a `cache` containing a matching `InferenceResult`
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-27"></a>27</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># for the provided `linfo` and `given_argtypes`. The purpose of this function is
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-28"></a>28</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># to return a valid value for `cache_lookup(linfo, argtypes, cache).argtypes`,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-29"></a>29</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code"># so that we can construct cache-correct `InferenceResult`s in the first place.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-30"></a>30</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function matching_cache_argtypes(linfo::MethodInstance, given_argtypes::Vector)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-31"></a>31</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    @assert isa(linfo.def, Method) # ensure the next line works
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-32"></a>32</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    nargs::Int = linfo.def.nargs
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-33"></a>33</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    @assert length(given_argtypes) &gt;= (nargs - 1)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-34"></a>34</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    given_argtypes = anymap(widenconditional, given_argtypes)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-35"></a>35</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    if linfo.def.isva
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-36"></a>36</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        isva_given_argtypes = Vector{Any}(undef, nargs)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-37"></a>37</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        for i = 1:(nargs - 1)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-38"></a>38</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            isva_given_argtypes[i] = argtype_by_index(given_argtypes, i)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-39"></a>39</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-40"></a>40</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        if length(given_argtypes) &gt;= nargs || !isvarargtype(given_argtypes[end])
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-41"></a>41</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            isva_given_argtypes[nargs] = tuple_tfunc(given_argtypes[nargs:end])
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-42"></a>42</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-43"></a>43</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            isva_given_argtypes[nargs] = tuple_tfunc(given_argtypes[end:end])
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-44"></a>44</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-45"></a>45</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        given_argtypes = isva_given_argtypes
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-46"></a>46</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-47"></a>47</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    cache_argtypes, overridden_by_const = matching_cache_argtypes(linfo, nothing)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-48"></a>48</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    if nargs === length(given_argtypes)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-49"></a>49</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        for i in 1:nargs
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-50"></a>50</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            given_argtype = given_argtypes[i]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-51"></a>51</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            cache_argtype = cache_argtypes[i]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-52"></a>52</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            if !is_argtype_match(given_argtype, cache_argtype, overridden_by_const[i])
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-53"></a>53</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                # prefer the argtype we were given over the one computed from `linfo`
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-54"></a>54</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                cache_argtypes[i] = given_argtype
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-55"></a>55</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                overridden_by_const[i] = true
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-56"></a>56</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-57"></a>57</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-58"></a>58</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-59"></a>59</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    return cache_argtypes, overridden_by_const
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-60"></a>60</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-61"></a>61</td>
+          <td></td>
+          <td></td>
+          <td>
+            <div class="call-sites">
+              <a name="S-opt-julia-usr-bin-share-julia-base-compiler-inferenceresult-jl-matching_cache_argtypes-61"></a>
+              1 (0.01%) samples spent in matching_cache_argtypes<br />
+              1 (100.00%) (ex.),
+              1 (100.00%) (incl.)
+              when called from
+              InferenceResult
+              <a href="inferenceresult-jl-aa36955df4dd4074fc6a-line.html#Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-12">line 12</a><br />
+            </div>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-62"></a>62</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function matching_cache_argtypes(linfo::MethodInstance, ::Nothing)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-63"></a>63</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    toplevel = !isa(linfo.def, Method)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-64"></a>64</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    linfo_argtypes = Any[unwrap_unionall(linfo.specTypes).parameters...]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-65"></a>65</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    nargs::Int = toplevel ? 0 : linfo.def.nargs
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-66"></a>66</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    cache_argtypes = Vector{Any}(undef, nargs)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-67"></a>67</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    # First, if we&#39;re dealing with a varargs method, then we set the last element of `args`
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-68"></a>68</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    # to the appropriate `Tuple` type or `PartialStruct` instance.
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-69"></a>69</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    if !toplevel &amp;&amp; linfo.def.isva
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-70"></a>70</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        if linfo.specTypes == Tuple
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-71"></a>71</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            if nargs &gt; 1
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-72"></a>72</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                linfo_argtypes = svec(Any[Any for i = 1:(nargs - 1)]..., Tuple.parameters[1])
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-73"></a>73</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-74"></a>74</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            vargtype = Tuple
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-75"></a>75</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-76"></a>76</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            linfo_argtypes_length = length(linfo_argtypes)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-77"></a>77</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            if nargs &gt; linfo_argtypes_length
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-78"></a>78</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                va = linfo_argtypes[linfo_argtypes_length]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-79"></a>79</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                if isvarargtype(va)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-80"></a>80</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                    new_va = rewrap_unionall(unconstrain_vararg_length(va), linfo.specTypes)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-81"></a>81</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                    vargtype_elements = Any[new_va]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-82"></a>82</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                    vargtype = Tuple{new_va}
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-83"></a>83</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-84"></a>84</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                    vargtype_elements = Any[]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-85"></a>85</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                    vargtype = Tuple{}
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-86"></a>86</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-87"></a>87</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-88"></a>88</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                vargtype_elements = Any[]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-89"></a>89</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                for p in linfo_argtypes[nargs:linfo_argtypes_length]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-90"></a>90</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                    p = isvarargtype(p) ? unconstrain_vararg_length(p) : p
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-91"></a>91</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                    push!(vargtype_elements, rewrap(p, linfo.specTypes))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-92"></a>92</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-93"></a>93</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                for i in 1:length(vargtype_elements)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-94"></a>94</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                    atyp = vargtype_elements[i]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-95"></a>95</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                    if isa(atyp, DataType) &amp;&amp; isdefined(atyp, :instance)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-96"></a>96</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                        # replace singleton types with their equivalent Const object
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-97"></a>97</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                        vargtype_elements[i] = Const(atyp.instance)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-98"></a>98</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                    elseif isconstType(atyp)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-99"></a>99</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                        vargtype_elements[i] = Const(atyp.parameters[1])
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-100"></a>100</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-101"></a>101</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-102"></a>102</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                vargtype = tuple_tfunc(vargtype_elements)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-103"></a>103</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-104"></a>104</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-105"></a>105</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        cache_argtypes[nargs] = vargtype
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-106"></a>106</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        nargs -= 1
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-107"></a>107</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-108"></a>108</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    # Now, we propagate type info from `linfo_argtypes` into `cache_argtypes`, improving some
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-109"></a>109</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    # type info as we go (where possible). Note that if we&#39;re dealing with a varargs method,
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-110"></a>110</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    # we already handled the last element of `cache_argtypes` (and decremented `nargs` so that
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-111"></a>111</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    # we don&#39;t overwrite the result of that work here).
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-112"></a>112</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    linfo_argtypes_length = length(linfo_argtypes)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-113"></a>113</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    if linfo_argtypes_length &gt; 0
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-114"></a>114</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        n = linfo_argtypes_length &gt; nargs ? nargs : linfo_argtypes_length
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-115"></a>115</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        tail_index = n
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-116"></a>116</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        local lastatype
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-117"></a>117</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        for i = 1:n
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-118"></a>118</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            atyp = linfo_argtypes[i]
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-119"></a>119</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            if i == n &amp;&amp; isvarargtype(atyp)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-120"></a>120</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                atyp = unwrapva(atyp)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-121"></a>121</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                tail_index -= 1
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-122"></a>122</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-123"></a>123</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            while isa(atyp, TypeVar)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-124"></a>124</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                atyp = atyp.ub
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-125"></a>125</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-126"></a>126</td>
+          <td>1 (0.01%)</td>
+          <td>1 (0.01%)</td>
+          <td>
+            <span class="code">            if isa(atyp, DataType) &amp;&amp; isdefined(atyp, :instance)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-127"></a>127</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                # replace singleton types with their equivalent Const object
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-128"></a>128</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                atyp = Const(atyp.instance)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-129"></a>129</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            elseif isconstType(atyp)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-130"></a>130</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                atyp = Const(atyp.parameters[1])
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-131"></a>131</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-132"></a>132</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                atyp = rewrap(atyp, linfo.specTypes)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-133"></a>133</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-134"></a>134</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            i == n &amp;&amp; (lastatype = atyp)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-135"></a>135</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            cache_argtypes[i] = atyp
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-136"></a>136</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-137"></a>137</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        for i = (tail_index + 1):nargs
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-138"></a>138</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            cache_argtypes[i] = lastatype
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-139"></a>139</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-140"></a>140</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    else
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-141"></a>141</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        @assert nargs == 0 &quot;invalid specialization of method&quot; # wrong number of arguments
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-142"></a>142</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-143"></a>143</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    return cache_argtypes, falses(length(cache_argtypes))
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-144"></a>144</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-145"></a>145</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-146"></a>146</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">function cache_lookup(linfo::MethodInstance, given_argtypes::Vector{Any}, cache::Vector{InferenceResult})
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-147"></a>147</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    method = linfo.def::Method
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-148"></a>148</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    nargs::Int = method.nargs
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-149"></a>149</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    method.isva &amp;&amp; (nargs -= 1)
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-150"></a>150</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    length(given_argtypes) &gt;= nargs || return nothing
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-151"></a>151</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    for cached_result in cache
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-152"></a>152</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        cached_result.linfo === linfo || continue
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-153"></a>153</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        cache_match = true
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-154"></a>154</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        cache_argtypes = cached_result.argtypes
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-155"></a>155</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        cache_overridden_by_const = cached_result.overridden_by_const
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-156"></a>156</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        for i in 1:nargs
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-157"></a>157</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            if !is_argtype_match(given_argtypes[i],
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-158"></a>158</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                                 cache_argtypes[i],
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-159"></a>159</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                                 cache_overridden_by_const[i])
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-160"></a>160</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                cache_match = false
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-161"></a>161</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                break
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-162"></a>162</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-163"></a>163</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-164"></a>164</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        if method.isva &amp;&amp; cache_match
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-165"></a>165</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">            cache_match = is_argtype_match(tuple_tfunc(given_argtypes[(nargs + 1):end]),
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-166"></a>166</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                                           cache_argtypes[end],
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-167"></a>167</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">                                           cache_overridden_by_const[end])
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-168"></a>168</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-169"></a>169</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        cache_match || continue
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-170"></a>170</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">        return cached_result
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-171"></a>171</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    end
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-172"></a>172</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">    return nothing
+</span>
+          </td>
+        </tr>
+
+        <tr>
+          <td><a name="Linferenceresult-jl-aa36955df4dd4074fc6a-line.html-173"></a>173</td>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="code">end
+</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

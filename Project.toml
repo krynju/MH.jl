@@ -7,6 +7,7 @@ version = "0.1.0"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 JuliaFormatter = "98e50ef6-434e-11e9-1051-2b60c6c9e899"
 Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
+StatProfilerHTML = "a8a75453-ed82-57c9-9e16-4cd1196ecbf5"
 
 [compat]
 julia = "1.5"
