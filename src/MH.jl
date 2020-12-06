@@ -3,7 +3,7 @@ module MH
 using Distributions
 using Random
 
-const SEED = 1337
+
 
 function ff(x::T) where T <: AbstractFloat
     x /= 100.0
@@ -26,7 +26,7 @@ function mh_serial_naive(x₀::T, N::Integer, burn_N::Integer, f::Function) wher
     target = 0.3
     accepted = 0
     for i = 1:burn_N
-        x′, α = _gen_candidate(xₜ, σ², ff)
+        x′, α = _gen_candidate(xₜ, σ², f)
         u = rand(Uniform(0, 1))
         if (u <= α)
             xₜ = x′
@@ -36,7 +36,7 @@ function mh_serial_naive(x₀::T, N::Integer, burn_N::Integer, f::Function) wher
     end
 
     for t = 1:N
-        x′, α = _gen_candidate(xₜ, σ², ff)
+        x′, α = _gen_candidate(xₜ, σ², f)
         u = rand(Uniform(0, 1))
         if (u <= α)
             xₜ = x′
@@ -76,7 +76,7 @@ function mh_serial_optimized(
     accepted = 0
     f_xₜ = f(xₜ)
     for i = 1:burn_N
-        x′, α, f_x′ = _gen_candidate(xₜ, σ², f_xₜ, ff)
+        x′, α, f_x′ = _gen_candidate(xₜ, σ², f_xₜ, f)
         u = rand(rng, Uniform(0, 1))
         if (u <= α)
             xₜ = x′
@@ -87,7 +87,7 @@ function mh_serial_optimized(
     end
 
     for t = 1:N
-        x′, α, f_x′ = _gen_candidate(xₜ, σ², f_xₜ, ff)
+        x′, α, f_x′ = _gen_candidate(xₜ, σ², f_xₜ, f)
         u = rand(rng, Uniform(0, 1))
         if (u <= α)
             xₜ = x′
@@ -125,7 +125,7 @@ function mh_threaded_naive(
     
     f_xₜ = f(xₜ)
     for i = 1:burn_N
-        x′, α, f_x′ = _gen_candidate(xₜ, σ², f_xₜ, ff)
+        x′, α, f_x′ = _gen_candidate(xₜ, σ², f_xₜ, f)
         u = rand(rng, Uniform(0, 1))
         if (u <= α)
             xₜ = x′
@@ -136,7 +136,7 @@ function mh_threaded_naive(
     end
 
     Threads.@threads for t = 1:N
-        x′, α, f_x′ = _gen_candidate(xₜ, σ², f_xₜ, ff)
+        x′, α, f_x′ = _gen_candidate(xₜ, σ², f_xₜ, f)
         u = rand(rng, Uniform(0, 1))
         if (u <= α)
             xₜ = x′
@@ -158,11 +158,10 @@ end
     x′, α, f_x′
 end
 
-function __generate_loop(x::Vector{T}, xₜ::T, σ²::T, range::R, ff, rng::RNG) where {T <: AbstractFloat,R <: AbstractRange,RNG <: AbstractRNG} 
-   
-    f_xₜ = ff(xₜ)
+function __generate_loop(x::Vector{T}, xₜ::T, σ²::T, range::R, f, rng::RNG) where {T <: AbstractFloat,R <: AbstractRange,RNG <: AbstractRNG} 
+    f_xₜ = f(xₜ)
     for t in range
-        x′, α, f_x′ = _gen_candidate(xₜ, σ², f_xₜ, ff, rng)
+        x′, α, f_x′ = _gen_candidate(xₜ, σ², f_xₜ, f, rng)
         u = rand(rng, Uniform(0, 1))
         if (u <= α)
             xₜ = x′
@@ -172,11 +171,11 @@ function __generate_loop(x::Vector{T}, xₜ::T, σ²::T, range::R, ff, rng::RNG)
     end
 end
 
-function __burn_loop(xₜ::T, σ²::T, burn_N::Integer, target, ff, rng::RNG) where  {T <: AbstractFloat,RNG <: AbstractRNG} 
+function __burn_loop(xₜ::T, σ²::T, burn_N::Integer, target, f, rng::RNG) where  {T <: AbstractFloat,RNG <: AbstractRNG} 
     accepted = 0
-    f_xₜ = ff(xₜ)
+    f_xₜ = f(xₜ)
     for i = 1:burn_N
-        x′, α, f_x′ = _gen_candidate(xₜ, σ², f_xₜ, ff, rng)
+        x′, α, f_x′ = _gen_candidate(xₜ, σ², f_xₜ, f, rng)
         u = rand(rng, Uniform(0, 1))
         if (u <= α)
             xₜ = x′
@@ -203,13 +202,13 @@ function mh_threaded_optimized(
     rng = MersenneTwister(seed)
 
     TARGET = 0.3
-    σ², xₜ = __burn_loop(xₜ, σ², burn_N, TARGET, ff, rng)
+    σ², xₜ = __burn_loop(xₜ, σ², burn_N, TARGET, f, rng)
 
     N_THR = Threads.nthreads()
 
     ranges = collect(Iterators.partition(1:N, (N + N_THR) ÷ N_THR))
 
-    _task = (id) -> Threads.@spawn __generate_loop(x, xₜ, σ², ranges[id], ff,  MersenneTwister(rng.seed[1] * id))
+    _task = (id) -> Threads.@spawn __generate_loop(x, xₜ, σ², ranges[id], f,  MersenneTwister(rng.seed[1] * id))
     wait.(map(id -> _task(id), 1:N_THR))  
 
     return x
