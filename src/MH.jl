@@ -103,14 +103,14 @@ function mh_threaded_naive(
     x₀::T,
     N::Integer,
     burn_N::Integer,
-    f::Function, seed=10
+    f::Function, seed
 ) where {T <: AbstractFloat}
 
     x = Vector{T}(undef, N)
     xₜ = x₀::T
     σ² = one(T)
     P = convert(T, 0.1)
-    rng = MersenneTwister(SEED)
+    rng = MersenneTwister(seed)
 
     target = convert(T, 0.3)
     accepted = 0
