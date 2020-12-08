@@ -152,42 +152,6 @@ end
 
  
 
-@inline function _gen_candidate(xₜ::T, σ²::T, f_xₜ, f, rng) where T <: AbstractFloat
-    g = Normal(xₜ, σ²)
-    xc = rand(rng, g)
-    f_xc = f(xc)
-    α = f_xc / f_xₜ
-    xc, α, f_xc
-end
-
-function __generate_loop(x::Vector{T}, xₜ::T, σ²::T, range::R, f, rng::RNG) where {T <: AbstractFloat,R <: AbstractRange,RNG <: AbstractRNG} 
-    f_xₜ = f(xₜ)
-    for t in range
-        xc, α, f_xc = _gen_candidate(xₜ, σ², f_xₜ, f, rng)
-        u = rand(rng, Uniform(0, 1))
-        if (u <= α)
-            xₜ = xc
-            f_xₜ = f_xc
-        end
-        @inbounds x[t] = xₜ
-    end
-end
-
-function __burn_loop(xₜ::T, σ²::T, burn_N::Integer, target, f, rng::RNG) where  {T <: AbstractFloat,RNG <: AbstractRNG} 
-    accepted = 0
-    f_xₜ = f(xₜ)
-    for i = 1:burn_N
-        xc, α, f_xc = _gen_candidate(xₜ, σ², f_xₜ, f, rng)
-        u = rand(rng, Uniform(0, 1))
-        if (u <= α)
-            xₜ = xc
-            f_xₜ = f_xc
-            accepted += 1
-        end
-        σ² += convert(T, 1 / σ² * 1000( (accepted / i) - target))
-    end
-    σ², xₜ
-end
 
 
 function mh_threaded_optimized(
@@ -197,6 +161,45 @@ function mh_threaded_optimized(
     f::Function, 
     seed::Integer
 ) where {T <: AbstractFloat}
+
+
+    @inline function _gen_candidate(xₜ::T, σ²::T, f_xₜ, f, rng) where T <: AbstractFloat
+        g = Normal(xₜ, σ²)
+        xc = rand(rng, g)
+        f_xc = f(xc)
+        α = f_xc / f_xₜ
+        xc, α, f_xc
+    end
+
+    function __generate_loop(x::Vector{T}, xₜ::T, σ²::T, range::R, f, rng::RNG) where {T <: AbstractFloat,R <: AbstractRange,RNG <: AbstractRNG} 
+        f_xₜ = f(xₜ)
+        for t in range
+            xc, α, f_xc = _gen_candidate(xₜ, σ², f_xₜ, f, rng)
+            u = rand(rng, Uniform(0, 1))
+            if (u <= α)
+                xₜ = xc
+                f_xₜ = f_xc
+            end
+            @inbounds x[t] = xₜ
+        end
+    end
+
+    function __burn_loop(xₜ::T, σ²::T, burn_N::Integer, target, f, rng::RNG) where  {T <: AbstractFloat,RNG <: AbstractRNG} 
+        accepted = 0
+        f_xₜ = f(xₜ)
+        for i = 1:burn_N
+            xc, α, f_xc = _gen_candidate(xₜ, σ², f_xₜ, f, rng)
+            u = rand(rng, Uniform(0, 1))
+            if (u <= α)
+                xₜ = xc
+                f_xₜ = f_xc
+                accepted += 1
+            end
+            σ² += convert(T, 1 / σ² * 1000( (accepted / i) - target))
+        end
+        σ², xₜ
+    end
+
     x = Vector{T}(undef, N)
     xₜ = x₀::T
     σ² = one(T)

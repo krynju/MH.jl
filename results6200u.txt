@@ -1,0 +1,268 @@
+burn_N = 100_000
+SEED=1111
+N=100_000
+
+julia> @benchmark mh_serial_naive(Float32(0.0), N, burn_N, ff)
+BenchmarkTools.Trial:
+  memory estimate:  390.70 KiB
+  allocs estimate:  2
+  --------------
+  minimum time:     35.655 ms (0.00% GC)
+  median time:      36.181 ms (0.00% GC)
+  mean time:        36.529 ms (0.01% GC)
+  maximum time:     49.372 ms (0.00% GC)
+  --------------
+  samples:          137
+  evals/sample:     1
+
+julia> @benchmark mh_serial_optimized(Float32(0.0), N, burn_N, ff, SEED)
+BenchmarkTools.Trial:
+  memory estimate:  410.17 KiB
+  allocs estimate:  10
+  --------------
+  minimum time:     22.201 ms (0.00% GC)
+  median time:      22.614 ms (0.00% GC)
+  mean time:        22.729 ms (0.02% GC)
+  maximum time:     25.012 ms (0.00% GC)
+  --------------
+  samples:          220
+  evals/sample:     1
+
+julia> @benchmark mh_threaded_naive(Float32(0.0), N, burn_N, ff, SEED)
+BenchmarkTools.Trial:
+  memory estimate:  27.86 MiB
+  allocs estimate:  1599526
+  --------------
+  minimum time:     57.767 ms (0.00% GC)
+  median time:      62.626 ms (0.00% GC)
+  mean time:        62.052 ms (2.78% GC)
+  maximum time:     73.356 ms (4.71% GC)
+  --------------
+  samples:          81
+  evals/sample:     1
+
+julia> @benchmark mh_threaded_optimized(Float32(0.0), N, burn_N, ff, SEED)
+BenchmarkTools.Trial:
+  memory estimate:  491.80 KiB
+  allocs estimate:  83
+  --------------
+  minimum time:     16.834 ms (0.00% GC)
+  median time:      17.579 ms (0.00% GC)
+  mean time:        18.610 ms (0.04% GC)
+  maximum time:     32.097 ms (0.00% GC)
+  --------------
+  samples:          270
+  evals/sample:     1
+
+julia>
+
+N = 1_000_000
+
+julia> @benchmark mh_serial_naive(Float32(0.0), N, burn_N, ff)
+
+BenchmarkTools.Trial:
+  memory estimate:  3.81 MiB
+  allocs estimate:  2
+  --------------
+  minimum time:     191.717 ms (0.00% GC)
+  median time:      204.376 ms (0.00% GC)
+  mean time:        213.251 ms (0.01% GC)
+  maximum time:     296.188 ms (0.00% GC)
+  --------------
+  samples:          24
+  evals/sample:     1
+
+julia> @benchmark mh_serial_optimized(Float32(0.0), N, burn_N, ff, SEED)
+BenchmarkTools.Trial:
+  memory estimate:  3.83 MiB
+  allocs estimate:  10
+  --------------
+  minimum time:     108.040 ms (0.00% GC)
+  median time:      110.405 ms (0.00% GC)
+  mean time:        115.433 ms (0.03% GC)
+  maximum time:     188.276 ms (0.00% GC)
+  --------------
+  samples:          44
+  evals/sample:     1
+
+julia> @benchmark mh_threaded_naive(Float32(0.0), N, burn_N, ff, SEED)
+BenchmarkTools.Trial:
+  memory estimate:  127.43 MiB
+  allocs estimate:  6999526
+  --------------
+  minimum time:     225.813 ms (6.62% GC)
+  median time:      244.200 ms (10.53% GC)
+  mean time:        250.660 ms (10.05% GC)
+  maximum time:     336.827 ms (13.05% GC)
+  --------------
+  samples:          20
+  evals/sample:     1
+
+julia> @benchmark mh_threaded_optimized(Float32(0.0), N, burn_N, ff, SEED)
+BenchmarkTools.Trial:
+  memory estimate:  3.91 MiB
+  allocs estimate:  83
+  --------------
+  minimum time:     47.465 ms (0.00% GC)
+  median time:      48.317 ms (0.00% GC)
+  mean time:        48.675 ms (0.15% GC)
+  maximum time:     51.681 ms (0.00% GC)
+  --------------
+  samples:          103
+  evals/sample:     1
+
+julia>
+
+N = 10_000_000
+
+julia> @benchmark mh_serial_naive(Float32(0.0), N, burn_N, ff)
+
+BenchmarkTools.Trial:
+  memory estimate:  38.15 MiB
+  allocs estimate:  2
+  --------------
+  minimum time:     1.760 s (0.00% GC)
+  median time:      1.769 s (0.00% GC)
+  mean time:        1.767 s (0.01% GC)
+  maximum time:     1.771 s (0.02% GC)
+  --------------
+  samples:          3
+  evals/sample:     1
+
+julia> @benchmark mh_serial_optimized(Float32(0.0), N, burn_N, ff, SEED)
+BenchmarkTools.Trial:
+  memory estimate:  38.17 MiB
+  allocs estimate:  10
+  --------------
+  minimum time:     1.023 s (0.00% GC)
+  median time:      1.044 s (0.00% GC)
+  mean time:        1.080 s (0.07% GC)
+  maximum time:     1.235 s (0.00% GC)
+  --------------
+  samples:          5
+  evals/sample:     1
+
+julia> @benchmark mh_threaded_naive(Float32(0.0), N, burn_N, ff, SEED)
+BenchmarkTools.Trial:
+  memory estimate:  1.10 GiB
+  allocs estimate:  60999527
+  --------------
+  minimum time:     2.263 s (13.40% GC)
+  median time:      2.374 s (21.16% GC)
+  mean time:        2.442 s (17.97% GC)
+  maximum time:     2.690 s (19.00% GC)
+  --------------
+  samples:          3
+  evals/sample:     1
+
+julia> @benchmark mh_threaded_optimized(Float32(0.0), N, burn_N, ff, SEED)
+BenchmarkTools.Trial:
+  memory estimate:  38.25 MiB
+  allocs estimate:  84
+  --------------
+  minimum time:     354.998 ms (0.00% GC)
+  median time:      359.578 ms (0.06% GC)
+  mean time:        371.939 ms (3.89% GC)
+  maximum time:     446.905 ms (19.86% GC)
+  --------------
+  samples:          14
+  evals/sample:     1
+
+julia>
+
+N = 100_000_000
+
+julia> @benchmark mh_serial_naive(Float32(0.0), N, burn_N, ff)
+
+BenchmarkTools.Trial:
+  memory estimate:  381.47 MiB
+  allocs estimate:  2
+  --------------
+  minimum time:     17.157 s (0.00% GC)
+  median time:      17.157 s (0.00% GC)
+  mean time:        17.157 s (0.00% GC)
+  maximum time:     17.157 s (0.00% GC)
+  --------------
+  samples:          1
+  evals/sample:     1
+
+julia> @benchmark mh_serial_optimized(Float32(0.0), N, burn_N, ff, SEED)
+BenchmarkTools.Trial:
+  memory estimate:  381.49 MiB
+  allocs estimate:  10
+  --------------
+  minimum time:     9.622 s (0.00% GC)
+  median time:      9.622 s (0.00% GC)
+  mean time:        9.622 s (0.00% GC)
+  maximum time:     9.622 s (0.00% GC)
+  --------------
+  samples:          1
+  evals/sample:     1
+
+julia> @benchmark mh_threaded_naive(Float32(0.0), N, burn_N, ff, SEED)
+BenchmarkTools.Trial:
+  memory estimate:  10.82 GiB
+  allocs estimate:  600999527
+  --------------
+  minimum time:     20.918 s (17.78% GC)
+  median time:      20.918 s (17.78% GC)
+  mean time:        20.918 s (17.78% GC)
+  maximum time:     20.918 s (17.78% GC)
+  --------------
+  samples:          1
+  evals/sample:     1
+
+julia> @benchmark mh_threaded_optimized(Float32(0.0), N, burn_N, ff, SEED)
+BenchmarkTools.Trial:
+  memory estimate:  381.57 MiB
+  allocs estimate:  83
+  --------------
+  minimum time:     3.443 s (0.01% GC)
+  median time:      3.492 s (0.01% GC)
+  mean time:        3.492 s (0.01% GC)
+  maximum time:     3.541 s (0.01% GC)
+  --------------
+  samples:          2
+  evals/sample:     1
+
+julia>
+
+
+
+N = 1_000_000_000
+
+
+julia> @benchmark mh_serial_naive(Float32(0.0), N, burn_N, ff)
+BenchmarkTools.Trial:
+  memory estimate:  3.73 GiB
+  allocs estimate:  2
+  --------------
+  minimum time:     172.677 s (0.00% GC)
+  median time:      172.677 s (0.00% GC)
+  mean time:        172.677 s (0.00% GC)
+  maximum time:     172.677 s (0.00% GC)
+  --------------
+  samples:          1
+  evals/sample:     1
+
+julia> @benchmark mh_serial_optimized(Float32(0.0), N, burn_N, ff, SEED)
+
+
+BenchmarkTools.Trial:
+  memory estimate:  3.73 GiB
+  allocs estimate:  10
+  --------------
+  minimum time:     97.012 s (0.00% GC)
+  median time:      97.012 s (0.00% GC)
+  mean time:        97.012 s (0.00% GC)
+  maximum time:     97.012 s (0.00% GC)
+  --------------
+  samples:          1
+  evals/sample:     1
+
+
+julia> @time mh_threaded_optimized(Float32(0.0), N, burn_N, ff, SEED);
+ 42.031967 seconds (84 allocations: 3.725 GiB, 0.08% gc time)
+
+ julia> @time mh_threaded_naive(Float32(0.0), N, burn_N, ff, SEED);
+208.435265 seconds (6.00 G allocations: 108.050 GiB, 16.47% gc time)
