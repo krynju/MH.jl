@@ -14,10 +14,10 @@ end
 function mh_serial_naive(x₀::T, N::Integer, burn_N::Integer, f::Function) where T <: AbstractFloat
     x = Vector{T}(undef, N)
     xₜ = x₀::T
-    σ² = one(T)
+    σ = one(T)
    
-    @inline function _gen_candidate(xₜ::Y, σ²::Y, f::Function) where Y <: AbstractFloat
-        g = Normal(xₜ, σ²)
+    @inline function _gen_candidate(xₜ::Y, σ::Y, f::Function) where Y <: AbstractFloat
+        g = Normal(xₜ, σ)
         xc = rand(g)
         f_xc = f(xc)
         α = f_xc / f(xₜ)
@@ -28,17 +28,17 @@ function mh_serial_naive(x₀::T, N::Integer, burn_N::Integer, f::Function) wher
     accepted = 0
     f_xₜ = f(xₜ)
     for i = 1:burn_N
-        xc, α = _gen_candidate(xₜ, σ², f)
+        xc, α = _gen_candidate(xₜ, σ, f)
         u = rand(Uniform(0, 1))
         if (u <= α)
             xₜ = xc
             accepted += 1
         end
-        σ² += convert(T, 1 / σ² * 1000( (accepted / i) - target))
+        σ += convert(T, 1 / σ * 1000( (accepted / i) - target))
     end
 
     for t = 1:N
-        xc, α = _gen_candidate(xₜ, σ², f)
+        xc, α = _gen_candidate(xₜ, σ, f)
         u = rand(Uniform(0, 1))
         if (u <= α)
             xₜ = xc
@@ -62,12 +62,12 @@ function mh_serial_optimized(
 
     x = Vector{T}(undef, N)
     xₜ = x₀::T
-    σ² = one(T)
+    σ = one(T)
    
     rng = MersenneTwister(seed)
 
-    @inline function _gen_candidate(xₜ::Y, σ²::Y, f_xₜ, f::Function, rng::RNG) where {Y <: AbstractFloat,RNG <: AbstractRNG}
-        g = Normal(xₜ, σ²)
+    @inline function _gen_candidate(xₜ::Y, σ::Y, f_xₜ, f::Function, rng::RNG) where {Y <: AbstractFloat,RNG <: AbstractRNG}
+        g = Normal(xₜ, σ)
         xc = rand(rng, g)
         f_xc = f(xc)
         α = f_xc / f_xₜ
@@ -78,18 +78,18 @@ function mh_serial_optimized(
     accepted = 0
     f_xₜ = f(xₜ)
     for i = 1:burn_N
-        xc, α, f_xc = _gen_candidate(xₜ, σ², f_xₜ, f, rng)
+        xc, α, f_xc = _gen_candidate(xₜ, σ, f_xₜ, f, rng)
         u = rand(rng, Uniform(0, 1))
         if (u <= α)
             xₜ = xc
             f_xₜ = f_xc
             accepted += 1
         end
-        σ² += convert(T, 1 / σ² * 1000( (accepted / i) - target))
+        σ += convert(T, 1 / σ * 1000( (accepted / i) - target))
     end
 
     for t = 1:N
-        xc, α, f_xc = _gen_candidate(xₜ, σ², f_xₜ, f, rng)
+        xc, α, f_xc = _gen_candidate(xₜ, σ, f_xₜ, f, rng)
         u = rand(rng, Uniform(0, 1))
         if (u <= α)
             xₜ = xc
@@ -111,12 +111,12 @@ function mh_threaded_naive(
     
     x = Vector{T}(undef, N)
     xₜ = x₀::T
-    σ² = one(T)
+    σ = one(T)
 
     rng = MersenneTwister(seed)
 
-    @inline function _gen_candidate(xₜ::Y, σ²::Y, f_xₜ, f::Function, rng::RNG) where {Y <: AbstractFloat,RNG <: AbstractRNG}
-        g = Normal(xₜ, σ²)
+    @inline function _gen_candidate(xₜ::Y, σ::Y, f_xₜ, f::Function, rng::RNG) where {Y <: AbstractFloat,RNG <: AbstractRNG}
+        g = Normal(xₜ, σ)
         xc = rand(rng, g)
         f_xc = f(xc)
         α = f_xc / f_xₜ
@@ -127,18 +127,18 @@ function mh_threaded_naive(
     accepted = 0
     f_xₜ = f(xₜ)
     for i = 1:burn_N
-        xc, α, f_xc = _gen_candidate(xₜ, σ², f_xₜ, f, rng)
+        xc, α, f_xc = _gen_candidate(xₜ, σ, f_xₜ, f, rng)
         u = rand(rng, Uniform(0, 1))
         if (u <= α)
             xₜ = xc
             f_xₜ = f_xc
             accepted += 1
         end
-        σ² += convert(T, 1 / σ² * 1000( (accepted / i) - target))
+        σ += convert(T, 1 / σ * 1000( (accepted / i) - target))
     end
 
     Threads.@threads for t = 1:N
-        xc, α, f_xc = _gen_candidate(xₜ, σ², f_xₜ, f, rng)
+        xc, α, f_xc = _gen_candidate(xₜ, σ, f_xₜ, f, rng)
         u = rand(rng, Uniform(0, 1))
         if (u <= α)
             xₜ = xc
@@ -163,18 +163,18 @@ function mh_threaded_optimized(
 ) where {T <: AbstractFloat}
 
 
-    @inline function _gen_candidate(xₜ::T, σ²::T, f_xₜ, f, rng) where T <: AbstractFloat
-        g = Normal(xₜ, σ²)
+    @inline function _gen_candidate(xₜ::T, σ::T, f_xₜ, f, rng) where T <: AbstractFloat
+        g = Normal(xₜ, σ)
         xc = rand(rng, g)
         f_xc = f(xc)
         α = f_xc / f_xₜ
         xc, α, f_xc
     end
 
-    function __generate_loop(x::Vector{T}, xₜ::T, σ²::T, range::R, f, rng::RNG) where {T <: AbstractFloat,R <: AbstractRange,RNG <: AbstractRNG} 
+    function __generate_loop(x::Vector{T}, xₜ::T, σ::T, range::R, f, rng::RNG) where {T <: AbstractFloat,R <: AbstractRange,RNG <: AbstractRNG} 
         f_xₜ = f(xₜ)
         for t in range
-            xc, α, f_xc = _gen_candidate(xₜ, σ², f_xₜ, f, rng)
+            xc, α, f_xc = _gen_candidate(xₜ, σ, f_xₜ, f, rng)
             u = rand(rng, Uniform(0, 1))
             if (u <= α)
                 xₜ = xc
@@ -184,36 +184,36 @@ function mh_threaded_optimized(
         end
     end
 
-    function __burn_loop(xₜ::T, σ²::T, burn_N::Integer, target, f, rng::RNG) where  {T <: AbstractFloat,RNG <: AbstractRNG} 
+    function __burn_loop(xₜ::T, σ::T, burn_N::Integer, target, f, rng::RNG) where  {T <: AbstractFloat,RNG <: AbstractRNG} 
         accepted = 0
         f_xₜ = f(xₜ)
         for i = 1:burn_N
-            xc, α, f_xc = _gen_candidate(xₜ, σ², f_xₜ, f, rng)
+            xc, α, f_xc = _gen_candidate(xₜ, σ, f_xₜ, f, rng)
             u = rand(rng, Uniform(0, 1))
             if (u <= α)
                 xₜ = xc
                 f_xₜ = f_xc
                 accepted += 1
             end
-            σ² += convert(T, 1 / σ² * 1000( (accepted / i) - target))
+            σ += convert(T, 1 / σ * 1000( (accepted / i) - target))
         end
-        σ², xₜ
+        σ, xₜ
     end
 
     x = Vector{T}(undef, N)
     xₜ = x₀::T
-    σ² = one(T)
+    σ = one(T)
 
     rng = MersenneTwister(seed)
 
     TARGET = 0.3
-    σ², xₜ = __burn_loop(xₜ, σ², burn_N, TARGET, f, rng)
+    σ, xₜ = __burn_loop(xₜ, σ, burn_N, TARGET, f, rng)
 
     N_THR = Threads.nthreads()
 
     ranges = collect(Iterators.partition(1:N, (N + N_THR) ÷ N_THR))
 
-    _task = (id) -> Threads.@spawn __generate_loop(x, $xₜ, $σ², $ranges[id], f,  MersenneTwister(rng.seed[1] * id))
+    _task = (id) -> Threads.@spawn __generate_loop(x, $xₜ, $σ, $ranges[id], f,  MersenneTwister(rng.seed[1] * id))
     wait.(map(id -> _task(id), 1:N_THR))
 
     return x
