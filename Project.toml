@@ -4,8 +4,15 @@ authors = ["krynju <gulinski.krystian@gmail.com> and contributors"]
 version = "0.1.0"
 
 [deps]
+Adapt = "79e6a3ab-5dfb-504d-930d-738a2a938a0e"
+CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+FLoops = "cc61a311-1640-44b5-9fba-1b764f453329"
+FoldsCUDA = "6cd66ae4-5932-4b96-926d-e73e578e42cc"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+Random123 = "74087812-796a-5b5d-8853-05524746bad3"
+RandomNumbers = "e6cf234a-135c-5ec9-84dd-332b85af5143"
+StructArrays = "09ab397b-f2b6-538f-b94a-2f83cf4a842a"
 
 [compat]
 julia = "1.5"
