@@ -277,7 +277,7 @@ function mh_gpu(
     TARGET = 0.3
     σ, xₜ = __burn_loop(xₜ, σ, burn_N, TARGET, f, rng)
 
-    N_THR = 256
+    N_THR = 1024
 
     ranges = collect(Iterators.partition(1:N, (N + N_THR) ÷ N_THR))
 
