@@ -222,6 +222,9 @@ end
 using CUDA, Random123,  FLoops, FoldsCUDA, StructArrays
 
 
+
+
+
 function mh_gpu(
     x₀::T,
     N::Integer,
@@ -285,9 +288,7 @@ function mh_gpu(
     d_ranges= CuArray(hcat(map(x-> [ x.start x.stop ], ranges )...))
 
     function my_pdf(mean, std, x)
-        a = 1 / sqrt(2 * 3.1415);
-        return a / std * exp(-0.5 * (((x - mean) / std)^2));
-
+        return convert(Float32, 0.3989481634448608f0 / std * exp(-0.5 * (((x - mean) / std)^2)));
     end
     
     function d_ff(x)
@@ -319,17 +320,31 @@ function mh_gpu(
         return nothing
     end
 
-        
+
+   
+
     function d__generate_loop2(x, xₜ, σ, ranges,rng)
         
         id = threadIdx().x
         r =  rng[id]
-        rand(r, Float32)
+        
 
         range = ranges[2id-1]:ranges[2id]
-        #f_xₜ = d_ff(xₜ)
+        f_xₜ = d_ff(xₜ)
         for t in range
-             x[t] = id + rand(r, Float32)
+            ll = -2.0f0 * CUDA.log( rand(r, Float32))
+            cc = CUDA.cos(2.0f0*π* rand(r, Float32))
+            n = CUDA.sqrt(ll )*cc
+            
+            xc = xₜ  +  σ  *n
+            f_xc = d_ff(xc)
+            α = f_xc / f_xₜ
+            u = rand(r, Float32)
+            if ( u <= α)
+                xₜ = xc
+                f_xₜ = f_xc
+            end
+            x[t] = xₜ
          end
         return nothing
     end
