@@ -280,12 +280,16 @@ function mh_gpu(
     TARGET = 0.3
     σ, xₜ = __burn_loop(xₜ, σ, burn_N, TARGET, f, rng)
 
-    N_THR = 1024
+    
+    BLOCK_SIZE = 256
+    SAMPLES_PER_THREAD = 10000
+    BLOCKS = 1 + N÷(BLOCK_SIZE*SAMPLES_PER_THREAD)
+    N_THR = N÷SAMPLES_PER_THREAD + 1
 
-    ranges = collect(Iterators.partition(1:N, (N + N_THR) ÷ N_THR))
+    ranges = collect(Iterators.partition(1:N, SAMPLES_PER_THREAD))
 
     d_x = CuArray(x)
-    d_ranges= CuArray(hcat(map(x-> [ x.start x.stop ], ranges )...))
+    d_ranges = CuArray(hcat(map(x -> [ x.start x.stop ], ranges)...))
 
     function my_pdf(mean, std, x)
         return convert(Float32, 0.3989481634448608f0 / std * exp(-0.5 * (((x - mean) / std)^2)));
@@ -296,47 +300,18 @@ function mh_gpu(
         my_pdf(0.0, 1.0, x) + my_pdf(3.0, 1.0, x) + my_pdf(6.0, 1.0, x)
     end
 
-    
-    function d__generate_loop(x, xₜ, σ, ranges)
-        id = threadIdx().x
-        #rng = Philox2x(0)
-        range = ranges[id*2+1]:ranges[id*2+2]
-        #f_xₜ = d_ff(xₜ)
-        for t in 1:100 
-           
-            #xc = rand(rng, Float32)
-            xc = 0.0f0
-            f_xc = d_ff(xc)
-            xc = 1000f0
-            α = f_xc / f_xₜ
-            #u = rand(rng, Float32)
-            u = 0.5f0
-            if (u <= α)
-                xₜ = xc
-                f_xₜ = f_xc
-            end
-            x[t] = xₜ
-        end
-        return nothing
-    end
-
-
-   
-
-    function d__generate_loop2(x, xₜ, σ, ranges,rng)
+    function d__generate_loop2(x, xₜ, σ, ranges, rng)
         
-        id = threadIdx().x
+        id = (blockIdx().x - 1) * BLOCK_SIZE + threadIdx().x
         r =  rng[id]
         
 
-        range = ranges[2id-1]:ranges[2id]
+        range = ranges[2id - 1]:ranges[2id]
         f_xₜ = d_ff(xₜ)
         for t in range
-            ll = -2.0f0 * CUDA.log( rand(r, Float32))
-            cc = CUDA.cos(2.0f0*π* rand(r, Float32))
-            n = CUDA.sqrt(ll )*cc
-            
-            xc = xₜ  +  σ  *n
+
+            n = CUDA.sqrt(-2.0f0 * CUDA.log(rand(r, Float32))) * CUDA.cos(2.0f0 * π * rand(r, Float32))
+            xc = xₜ  +  σ  * n
             f_xc = d_ff(xc)
             α = f_xc / f_xₜ
             u = rand(r, Float32)
@@ -345,7 +320,7 @@ function mh_gpu(
                 f_xₜ = f_xc
             end
             x[t] = xₜ
-         end
+        end
         return nothing
     end
 
@@ -353,7 +328,7 @@ function mh_gpu(
     b = replace_storage(CuArray, a)
 
     CUDA.@sync begin
-    @cuda threads=N_THR d__generate_loop2(d_x, xₜ, σ, d_ranges, b)
+        @cuda threads = BLOCK_SIZE blocks = BLOCKS d__generate_loop2(d_x, xₜ, σ, d_ranges, b)
     end
     
     return x
