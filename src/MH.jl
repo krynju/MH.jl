@@ -280,12 +280,12 @@ function mh_gpu(
     TARGET = 0.3
     σ, xₜ = __burn_loop(xₜ, σ, burn_N, TARGET, f, rng)
 
-    N_THR = 1024
-    SAMPLES_PER_THREAD = 10000
-    ranges = collect(Iterators.partition(1:N, (N + N_THR) ÷ N_THR))
+    _n = (_a, _b) -> (_a + _b - 1) ÷ _b
 
-    d_x = CuArray(x)
-    d_ranges = CuArray(hcat(map(x -> [ x.start x.stop ], ranges)...))
+    SAMPLES_PER_THREAD = 10000
+    N_THR_PER_BLOCK = 1024
+    N_BLOCKS = _n(N, SAMPLES_PER_THREAD * N_THR_PER_BLOCK)
+    N_THR = _n(N, SAMPLES_PER_THREAD)
 
     function my_pdf(mean, std, x)
         return convert(Float32, 0.3989481634448608f0 / std * exp(-0.5 * (((x - mean) / std)^2)));
@@ -296,26 +296,29 @@ function mh_gpu(
         my_pdf(0.0, 1.0, x) + my_pdf(3.0, 1.0, x) + my_pdf(6.0, 1.0, x)
     end
 
-    function d__generate_loop2(x, xₜ, σ, ranges, rng)
+    function d__generate_loop2(x, xₜ, σ, N, rng)
         id = (blockIdx().x - 1) * blockDim().x + threadIdx().x
-        r =  rng[id]
-        set_counter!(r, (id - 1) * SAMPLES_PER_THREAD)
-        range = ranges[2id - 1]:ranges[2id]
-        f_xₜ = d_ff(xₜ)
-        for t in range
-            ll = -2.0f0 * CUDA.log(rand(r, Float32))
-            cc = CUDA.cos(2.0f0 * π * rand(r, Float32))
-            n = CUDA.sqrt(ll) * cc
+        range = (1 + (id - 1) * SAMPLES_PER_THREAD):(id * SAMPLES_PER_THREAD) % (N + 1)
+      
+        if range.start <= range.stop
+            r =  rng[id]
+            set_counter!(r, (id - 1) * 4 * SAMPLES_PER_THREAD)
+            f_xₜ = d_ff(xₜ)
+            for t in range
+                ll = -2.0f0 * CUDA.log(rand(r, Float32))
+                cc = CUDA.cos(2.0f0 * π * rand(r, Float32))
+                n = CUDA.sqrt(ll) * cc
             
-            xc = xₜ  +  σ  * n
-            f_xc = d_ff(xc)
-            α = f_xc / f_xₜ
-            u = rand(r, Float32)
-            if ( u <= α)
-                xₜ = xc
-                f_xₜ = f_xc
+                xc = xₜ  +  σ  * n
+                f_xc = d_ff(xc)
+                α = f_xc / f_xₜ
+                u = rand(r, Float32)
+                if ( u <= α)
+                    xₜ = xc
+                    f_xₜ = f_xc
+                end
+                x[t] = xₜ
             end
-            x[t] = xₜ
         end
         return nothing
     end
@@ -325,7 +328,7 @@ function mh_gpu(
 
 
     CUDA.@sync begin
-        @cuda threads = N_THR d__generate_loop2(d_x, xₜ, σ, d_ranges, b)
+        @cuda threads = N_THR_PER_BLOCK blocks = N_BLOCKS d__generate_loop2(x, xₜ, σ, N, b)
     end
     
     return x
