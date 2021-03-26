@@ -234,6 +234,9 @@ function mh_gpu(
     seed::Integer
 ) where {T <: AbstractFloat}
 
+    SAMPLES_PER_THREAD = 100000
+    N_THR_PER_BLOCK = 1024
+
 
     @inline function _gen_candidate(xₜ::T, σ::T, f_xₜ, f, rng) where T <: AbstractFloat
         g = Normal(xₜ, σ)
@@ -277,6 +280,8 @@ function mh_gpu(
         d_pdf(0.0, 1.0, x) + d_pdf(3.0, 1.0, x) + d_pdf(6.0, 1.0, x)
     end
 
+    
+
     function d_generate_loop(x, xₜ, σ, N, rng)
         id = (blockIdx().x - 1) * blockDim().x + threadIdx().x
         range = (1 + (id - 1) * SAMPLES_PER_THREAD):(id * SAMPLES_PER_THREAD) % (N + 1)
@@ -303,8 +308,7 @@ function mh_gpu(
 
     _n = (_a, _b) -> (_a + _b - 1) ÷ _b
 
-    SAMPLES_PER_THREAD = 100000
-    N_THR_PER_BLOCK = 1024
+    
     N_BLOCKS = _n(N, SAMPLES_PER_THREAD * N_THR_PER_BLOCK)
     N_THR = _n(N, SAMPLES_PER_THREAD)
 
